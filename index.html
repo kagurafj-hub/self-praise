@@ -428,8 +428,9 @@ function applyTimeTheme() {
   const h = now.getHours();
 
   // ここで時間帯を調整できます
-  const isNight = (h >= 19 || h < 5);      // 19:00-4:59
-  const isDawn  = (h >= 5 && h < 8);       // 5:00-7:59
+
+const isNight = false;
+const isDawn  = true;
 
   document.body.classList.remove("theme-night", "theme-dawn");
 
