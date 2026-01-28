@@ -100,6 +100,77 @@
     color: #e9e3ff;
   }
 }
+
+/* ===== 時間で切り替えるテーマ（bodyにクラスを付ける） ===== */
+body.theme-night {
+  --bg-base: #1e1b2e;
+  --card-bg: #2a2542;
+  --accent-main: #c8b6ff;
+  --accent-sub: #f2b8c6;
+  --text-main: #f5f3ff;
+  --text-muted: #b6b1d6;
+  --border-soft: #3a3560;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(242,184,198,0.12), transparent 60%),
+    var(--bg-base);
+}
+
+body.theme-night header {
+  background: rgba(42,37,66,0.85);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+body.theme-night textarea,
+body.theme-night input[type="text"]{
+  background: #1b1730;
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+}
+
+body.theme-night .ghost{
+  background: #3a3560;
+  color: var(--text-main);
+}
+
+body.theme-night .danger{
+  background: rgba(176,0,32,0.25);
+  color: #ffb4c8;
+}
+
+body.theme-night .pill{
+  background: rgba(200,182,255,0.25);
+  color: #e9e3ff;
+}
+
+/* 夜明け：夜より少し明るく、ローズの光を強める */
+body.theme-dawn {
+  --bg-base: #2a2440;
+  --card-bg: #332b52;
+  --accent-main: #d6c8ff;
+  --accent-sub: #f6c0d0;
+  --text-main: #f7f5ff;
+  --text-muted: #c8c3e6;
+  --border-soft: #4a3f76;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, rgba(246,192,208,0.18), transparent 62%),
+    radial-gradient(900px 500px at 85% 10%, rgba(214,200,255,0.14), transparent 60%),
+    var(--bg-base);
+}
+
+body.theme-dawn header{
+  background: rgba(51,43,82,0.88);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+body.theme-dawn textarea,
+body.theme-dawn input[type="text"]{
+  background: #241f39;
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+}
+
   </style>
 </head>
 <body>
@@ -336,8 +407,6 @@
   $("search").addEventListener("input", render);
   $("todayBtn").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
-  render();
-
 const praiseLines = [
   "今日も、ちゃんと生きました。",
   "小さな一歩、確かに進んでいます。",
@@ -352,6 +421,28 @@ function showPraise() {
 }
 
 showPraise();
+
+// ===== 時間帯でテーマを自動切替 =====
+function applyTimeTheme() {
+  const now = new Date();
+  const h = now.getHours();
+
+  // ここで時間帯を調整できます
+  const isNight = (h >= 19 || h < 5);      // 19:00-4:59
+  const isDawn  = (h >= 5 && h < 8);       // 5:00-7:59
+
+  document.body.classList.remove("theme-night", "theme-dawn");
+
+  if (isNight) document.body.classList.add("theme-night");
+  else if (isDawn) document.body.classList.add("theme-dawn");
+  // それ以外（昼）はクラスなし＝今の配色（シャンパン/ローズ/アメジスト）
+}
+
+// 初回適用＋定期更新（5分おき）
+applyTimeTheme();
+setInterval(applyTimeTheme, 5 * 60 * 1000);
+
+render();
 
 </script>
 </body>
