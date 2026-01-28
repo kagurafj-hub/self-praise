@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>一日自分褒め日記</title>
+  <style>
+:root {
+  --bg-base: #FAF7F5;        /* シャンパン */
+  --accent-main: #BFA6C8;   /* アメジスト */
+  --accent-sub: #E8B7C6;    /* ローズクォーツ */
+  --text-main: #3A2E39;
+  --text-muted: #7A6B76;
+  --card-bg: #FFFFFF;
+  --border-soft: #E6DFE3;
+}
+    body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; margin: 0;
+  background: var(--bg-base);
+  color: var(--text-main);
+}
+
+    header { padding: 18px 16px; background:#fff; position: sticky; top:0; border-bottom:1px solid #eee; }
+    h1 { font-size: 18px; margin:0; }
+    main { padding: 16px; max-width: 760px; margin: 0 auto; }
+    .card {   background: var(--card-bg);
+  border: 1px solid var(--border-soft); border-radius: 12px; padding: 14px; margin: 12px 0; }
+    label { display:block; font-size: 13px; margin: 10px 0 6px; color:#555; }
+    textarea, input[type="text"] { width: 100%; box-sizing:border-box; padding: 12px; border:1px solid #ddd; border-radius:10px; font-size: 16px; background:#fff; }
+    textarea { min-height: 110px; resize: vertical; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; }
+    button { border:0; border-radius: 10px; padding: 12px 14px; font-size: 15px; cursor: pointer; }
+.primary {
+  background: var(--accent-main);
+  color: #fff;
+}
+.ghost {
+  background: #f2f2f7;
+  color: var(--text-main);
+}
+    .danger { background:#ffe7ea; color:#b00020; }
+    .small { padding: 9px 10px; font-size: 14px; border-radius: 9px; }
+    .muted { color:#666; font-size: 13px; }
+    .entry { border-top:1px dashed #eee; padding-top: 12px; margin-top: 12px; }
+    .entry:first-child { border-top:0; padding-top:0; margin-top:0; }
+    .date { font-weight: 700; }
+    .pill { display:inline-block; background:#f4f0ff; color:#4a33cc; padding: 4px 8px; border-radius: 999px; font-size: 12px; margin-left: 8px;}
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+/* ===== 夜明けUI ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-base: #1e1b2e;        /* 夜の紫 */
+    --card-bg: #2a2542;
+    --accent-main: #c8b6ff;   /* 夜明けの光 */
+    --accent-sub: #f2b8c6;    /* 淡いローズ */
+    --text-main: #f5f3ff;
+    --text-muted: #b6b1d6;
+    --border-soft: #3a3560;
+  }
+
+  body {
+    background:
+      radial-gradient(
+        1200px 600px at 50% -10%,
+        rgba(242,184,198,0.12),
+        transparent 60%
+      ),
+      var(--bg-base);
+  }
+
+  header {
+    background: rgba(42,37,66,0.85);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .card {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+
+  textarea,
+  input[type="text"] {
+    background: #1b1730;
+    color: var(--text-main);
+    border: 1px solid var(--border-soft);
+  }
+
+  .ghost {
+    background: #3a3560;
+    color: var(--text-main);
+  }
+
+  .danger {
+    background: rgba(176,0,32,0.25);
+    color: #ffb4c8;
+  }
+
+  .pill {
+    background: rgba(200,182,255,0.25);
+    color: #e9e3ff;
+  }
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>一日自分褒め日記 <span class="pill">端末保存</span></h1>
+    <div class="muted" id="todayLine"></div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="row" style="align-items:center; justify-content:space-between;">
+        <div>
+          <div class="muted">今日のテーマ（任意）</div>
+          <div id="themePreview" style="font-weight:700; margin-top:4px;">—</div>
+        </div>
+        <button class="ghost small" id="suggestBtn">褒めのヒント</button>
+      </div>
+
+      <label for="theme">テーマ（例：仕事／家事／健康／学び／対人）</label>
+      <input id="theme" type="text" placeholder="例：学び / 仕事 / 家事" />
+
+      <label for="text">今日の「自分を褒めたいこと」</label>
+      <textarea id="text" placeholder="例：寒い中でも外出してやるべき用事を済ませた。&#10;例：5分だけでも片付けをした。"></textarea>
+
+      <label for="score">自己肯定感スコア（1〜5）</label>
+      <input id="score" type="range" min="1" max="5" value="3" />
+      <div class="muted">いまの気分：<span id="scoreLabel" class="mono">3</span>/5</div>
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="saveBtn">保存</button>
+        <button class="ghost" id="exportBtn">書き出し（JSON）</button>
+        <button class="ghost" id="importBtn">読み込み（JSON）</button>
+        <button class="danger" id="clearBtn">全削除</button>
+      </div>
+      <div class="muted" style="margin-top:10px;">
+        ※データはこの端末のブラウザに保存されます（ログイン不要）。
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="align-items:center; justify-content:space-between;">
+        <div style="font-weight:700;">履歴</div>
+        <div class="muted">合計 <span id="count">0</span> 件</div>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <input id="search" type="text" placeholder="検索（例：仕事、家事）" style="flex:1;" />
+        <button class="ghost small" id="todayBtn">今日へ</button>
+      </div>
+      <div id="list" style="margin-top:12px;"></div>
+    </div>
+  </main>
+
+<script>
+  const KEY = "selfPraiseDiary.v1";
+  const $ = (id) => document.getElementById(id);
+
+  const today = new Date();
+  const fmtDate = (d) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+  };
+
+  const load = () => {
+    try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
+    catch { return []; }
+  };
+  const saveAll = (arr) => localStorage.setItem(KEY, JSON.stringify(arr));
+
+  const render = () => {
+    const q = $("search").value.trim().toLowerCase();
+    const arr = load().sort((a,b)=> b.ts - a.ts);
+    const filtered = q
+      ? arr.filter(e => (e.theme + " " + e.text).toLowerCase().includes(q))
+      : arr;
+
+    $("count").textContent = String(arr.length);
+    const list = $("list");
+    list.innerHTML = "";
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="muted">まだ記録がありません。今日の自分をひとつ褒めましょう。</div>`;
+      return;
+    }
+
+    filtered.forEach((e) => {
+      const d = new Date(e.ts);
+      const wrap = document.createElement("div");
+      wrap.className = "entry";
+      wrap.innerHTML = `
+        <div class="row" style="align-items:center; justify-content:space-between;">
+          <div class="date">${fmtDate(d)} <span class="pill">スコア ${e.score}/5</span></div>
+          <div class="row">
+            <button class="ghost small" data-edit="${e.id}">編集</button>
+            <button class="danger small" data-del="${e.id}">削除</button>
+          </div>
+        </div>
+        <div class="muted" style="margin-top:6px;">テーマ：${escapeHtml(e.theme || "—")}</div>
+        <div style="white-space:pre-wrap; margin-top:10px;">${escapeHtml(e.text)}</div>
+      `;
+      list.appendChild(wrap);
+    });
+
+    list.querySelectorAll("[data-del]").forEach(btn=>{
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-del");
+        const arr = load().filter(e=> e.id !== id);
+        saveAll(arr);
+        render();
+      });
+    });
+
+    list.querySelectorAll("[data-edit]").forEach(btn=>{
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-edit");
+        const arr = load();
+        const e = arr.find(x=> x.id === id);
+        if (!e) return;
+        $("theme").value = e.theme || "";
+        $("text").value = e.text || "";
+        $("score").value = e.score || 3;
+        $("scoreLabel").textContent = $("score").value;
+        $("themePreview").textContent = $("theme").value || "—";
+        $("saveBtn").textContent = "更新";
+        $("saveBtn").setAttribute("data-editing", id);
+        window.scrollTo({ top: 0, behavior:"smooth" });
+      });
+    });
+  };
+
+  const escapeHtml = (s) =>
+    (s ?? "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+
+  const hintPool = [
+    "今日、ちゃんと起きた / 出かけた",
+    "小さくても家事を進めた",
+    "誰かに丁寧に返信した",
+    "仕事の一歩を進めた（5分でもOK）",
+    "体をいたわった（水を飲んだ、休んだ）",
+    "学びを続けた（1行でも読んだ）",
+    "未来の自分が助かる準備をした",
+    "嫌なことを避けずに対処した",
+    "自分の気持ちに気づけた・言語化できた"
+  ];
+
+  $("todayLine").textContent = `今日は ${fmtDate(today)}。ひとつでいいので、自分を褒めましょう。`;
+
+  $("score").addEventListener("input", () => {
+    $("scoreLabel").textContent = $("score").value;
+  });
+
+  $("theme").addEventListener("input", () => {
+    $("themePreview").textContent = $("theme").value || "—";
+  });
+
+  $("suggestBtn").addEventListener("click", () => {
+    const hint = hintPool[Math.floor(Math.random()*hintPool.length)];
+    const t = $("text").value.trim();
+    $("text").value = t ? (t + "\n" + "・" + hint) : ("・" + hint);
+    $("text").focus();
+  });
+
+  $("saveBtn").addEventListener("click", () => {
+    const theme = $("theme").value.trim();
+    const text = $("text").value.trim();
+    const score = Number($("score").value);
+
+    if (!text) { alert("褒めたいことを1つ書いてください。"); return; }
+
+    const arr = load();
+    const editingId = $("saveBtn").getAttribute("data-editing");
+
+    if (editingId) {
+      const idx = arr.findIndex(e=> e.id === editingId);
+      if (idx >= 0) {
+        arr[idx] = { ...arr[idx], theme, text, score, ts: Date.now() };
+      }
+      $("saveBtn").removeAttribute("data-editing");
+      $("saveBtn").textContent = "保存";
+    } else {
+      arr.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(),
+        theme, text, score,
+        ts: Date.now()
+      });
+    }
+
+    saveAll(arr);
+    $("text").value = "";
+    render();
+  });
+
+  $("exportBtn").addEventListener("click", () => {
+    const data = JSON.stringify(load(), null, 2);
+    const blob = new Blob([data], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "self-praise-diary.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $("importBtn").addEventListener("click", async () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json";
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const text = await file.text();
+      try {
+        const arr = JSON.parse(text);
+        if (!Array.isArray(arr)) throw new Error("format");
+        saveAll(arr);
+        render();
+        alert("読み込みました。");
+      } catch {
+        alert("読み込みに失敗しました（JSON形式を確認してください）。");
+      }
+    };
+    input.click();
+  });
+
+  $("clearBtn").addEventListener("click", () => {
+    if (!confirm("全データを削除します。よろしいですか？")) return;
+    localStorage.removeItem(KEY);
+    render();
+  });
+
+  $("search").addEventListener("input", render);
+  $("todayBtn").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+
+  render();
+
+const praiseLines = [
+  "今日も、ちゃんと生きました。",
+  "小さな一歩、確かに進んでいます。",
+  "それを書けた時点で、もう十分。",
+  "自分に向き合えたのが一番えらい。",
+  "静かな努力、ちゃんと価値があります。"
+];
+
+function showPraise() {
+  const line = praiseLines[Math.floor(Math.random() * praiseLines.length)];
+  alert("🌙 " + line);
+}
+
+showPraise();
+
+</script>
+</body>
+</html>
