@@ -445,12 +445,12 @@ body.theme-dawn .danger {
     const h = now.getHours();
 
     // ✅ いまは「dawn強制」（確認用）
-    const isNight = false;
-    const isDawn  = true;
+     // const isNight = false; 
+     // const isDawn  = true; 
 
     // ▼元に戻すときは、上2行を消してこれを使う
-    // const isNight = (h >= 19 || h < 5);   // 19:00-4:59
-    // const isDawn  = (h >= 5 && h < 8);    // 5:00-7:59
+    const isNight = (h >= 19 || h < 5);   // 19:00-4:59
+    const isDawn  = (h >= 5 && h < 8);    // 5:00-7:59
 
     document.body.classList.remove("theme-night", "theme-dawn");
 
