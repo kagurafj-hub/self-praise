@@ -7,46 +7,75 @@
   <style>
 :root {
   --bg-base: #FAF7F5;        /* シャンパン */
-  --accent-main: #BFA6C8;   /* アメジスト */
-  --accent-sub: #E8B7C6;    /* ローズクォーツ */
+  --accent-main: #BFA6C8;    /* アメジスト */
+  --accent-sub: #E8B7C6;     /* ローズクォーツ */
   --text-main: #3A2E39;
   --text-muted: #7A6B76;
   --card-bg: #FFFFFF;
   --border-soft: #E6DFE3;
 }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; margin: 0;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  margin: 0;
   background: var(--bg-base);
   color: var(--text-main);
 }
 
-    header { padding: 18px 16px; background:#fff; position: sticky; top:0; border-bottom:1px solid #eee; }
-    h1 { font-size: 18px; margin:0; }
-    main { padding: 16px; max-width: 760px; margin: 0 auto; }
-    .card {   background: var(--card-bg);
-  border: 1px solid var(--border-soft); border-radius: 12px; padding: 14px; margin: 12px 0; }
-    label { display:block; font-size: 13px; margin: 10px 0 6px; color:#555; }
-    textarea, input[type="text"] { width: 100%; box-sizing:border-box; padding: 12px; border:1px solid #ddd; border-radius:10px; font-size: 16px; background:#fff; }
-    textarea { min-height: 110px; resize: vertical; }
-    .row { display:flex; gap:10px; flex-wrap: wrap; }
-    button { border:0; border-radius: 10px; padding: 12px 14px; font-size: 15px; cursor: pointer; }
-.primary {
-  background: var(--accent-main);
-  color: #fff;
+header {
+  padding: 18px 16px;
+  background:#fff;
+  position: sticky;
+  top:0;
+  border-bottom:1px solid #eee;
 }
-.ghost {
-  background: #f2f2f7;
-  color: var(--text-main);
-}
-    .danger { background:#ffe7ea; color:#b00020; }
-    .small { padding: 9px 10px; font-size: 14px; border-radius: 9px; }
-    .muted { color:#666; font-size: 13px; }
-    .entry { border-top:1px dashed #eee; padding-top: 12px; margin-top: 12px; }
-    .entry:first-child { border-top:0; padding-top:0; margin-top:0; }
-    .date { font-weight: 700; }
-    .pill { display:inline-block; background:#f4f0ff; color:#4a33cc; padding: 4px 8px; border-radius: 999px; font-size: 12px; margin-left: 8px;}
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+h1 { font-size: 18px; margin:0; }
+main { padding: 16px; max-width: 760px; margin: 0 auto; }
 
-/* ===== 夜明けUI ===== */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px 0;
+}
+label { display:block; font-size: 13px; margin: 10px 0 6px; color:#555; }
+
+textarea, input[type="text"] {
+  width: 100%;
+  box-sizing:border-box;
+  padding: 12px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  font-size: 16px;
+  background:#fff;
+}
+textarea { min-height: 110px; resize: vertical; }
+.row { display:flex; gap:10px; flex-wrap: wrap; }
+
+button { border:0; border-radius: 10px; padding: 12px 14px; font-size: 15px; cursor: pointer; }
+.primary { background: var(--accent-main); color: #fff; }
+.ghost { background: #f2f2f7; color: var(--text-main); }
+.danger { background:#ffe7ea; color:#b00020; }
+
+.small { padding: 9px 10px; font-size: 14px; border-radius: 9px; }
+.muted { color:#666; font-size: 13px; }
+
+.entry { border-top:1px dashed #eee; padding-top: 12px; margin-top: 12px; }
+.entry:first-child { border-top:0; padding-top:0; margin-top:0; }
+.date { font-weight: 700; }
+
+.pill {
+  display:inline-block;
+  background:#f4f0ff;
+  color:#4a33cc;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+/* ===== 夜明けUI（端末のダーク設定に追従する旧方式：残してOK） ===== */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-base: #1e1b2e;        /* 夜の紫 */
@@ -60,11 +89,7 @@
 
   body {
     background:
-      radial-gradient(
-        1200px 600px at 50% -10%,
-        rgba(242,184,198,0.12),
-        transparent 60%
-      ),
+      radial-gradient(1200px 600px at 50% -10%, rgba(242,184,198,0.12), transparent 60%),
       var(--bg-base);
   }
 
@@ -74,9 +99,7 @@
     border-bottom: 1px solid var(--border-soft);
   }
 
-  .card {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  }
+  .card { box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
 
   textarea,
   input[type="text"] {
@@ -85,20 +108,11 @@
     border: 1px solid var(--border-soft);
   }
 
-  .ghost {
-    background: #3a3560;
-    color: var(--text-main);
-  }
+  .ghost { background: #3a3560; color: var(--text-main); }
 
-  .danger {
-    background: rgba(176,0,32,0.25);
-    color: #ffb4c8;
-  }
+  .danger { background: rgba(176,0,32,0.25); color: #ffb4c8; }
 
-  .pill {
-    background: rgba(200,182,255,0.25);
-    color: #e9e3ff;
-  }
+  .pill { background: rgba(200,182,255,0.25); color: #e9e3ff; }
 }
 
 /* ===== 時間で切り替えるテーマ（bodyにクラスを付ける） ===== */
@@ -114,86 +128,60 @@ body.theme-night {
     radial-gradient(1200px 600px at 50% -10%, rgba(242,184,198,0.12), transparent 60%),
     var(--bg-base);
 }
-
 body.theme-night header {
   background: rgba(42,37,66,0.85);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border-soft);
 }
-
 body.theme-night textarea,
 body.theme-night input[type="text"]{
   background: #1b1730;
   color: var(--text-main);
   border: 1px solid var(--border-soft);
 }
-
-body.theme-night .ghost{
-  background: #3a3560;
-  color: var(--text-main);
-}
-
-body.theme-night .danger{
-  background: rgba(176,0,32,0.25);
-  color: #ffb4c8;
-}
-
-body.theme-night .pill{
-  background: rgba(200,182,255,0.25);
-  color: #e9e3ff;
-}
+body.theme-night .ghost{ background: #3a3560; color: var(--text-main); }
+body.theme-night .danger{ background: rgba(176,0,32,0.25); color: #ffb4c8; }
+body.theme-night .pill{ background: rgba(200,182,255,0.25); color: #e9e3ff; }
 
 /* 夜明け：ピンク＋金色（あたたかい）*/
 body.theme-dawn {
- --bg-base: #4a3a68;     /* 夜明け前の紫 */
+  --bg-base: #4a3a68;        /* 明るめの朝の空 */
   --card-bg: #43315c;
-  --accent-main: #ffd6e8;   /* 朝焼けピンク */
-  --accent-sub: #ffb3c7;    /* ローズ光 */
+  --accent-main: #ffd6e8;    /* 朝焼けピンク */
+  --accent-sub: #ffb3c7;     /* ローズ光 */
   --text-main: #fff6fb;
   --text-muted: #e6cfe0;
   --border-soft: #6b4b7a;
 
   background:
-    radial-gradient(1200px 700px at 50% -10%,
-  rgba(255,179,199,0.45),
-  transparent 40%
-),
-    radial-gradient(900px 500px at 80% 10%,
-      rgba(255,214,232,0.25),
-      transparent 50%
-    ),
+    radial-gradient(1200px 700px at 50% -10%, rgba(255,179,199,0.45), transparent 40%),
+    radial-gradient(900px 500px at 80% 10%, rgba(255,214,232,0.25), transparent 50%),
     var(--bg-base);
 }
-
 body.theme-dawn header {
   background: rgba(67,49,92,0.85);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border-soft);
 }
-
 body.theme-dawn textarea,
 body.theme-dawn input[type="text"]{
   background: #241f39;
   color: var(--text-main);
   border: 1px solid var(--border-soft);
 }
-
 body.theme-dawn .primary {
   background: linear-gradient(135deg, #ffb3c7, #ffd6e8);
-  color: #3a1f2b;  /* ダークローズ文字 */
+  color: #3a1f2b; /* ダークローズ文字 */
   font-weight: 700;
 }
-
 body.theme-dawn .ghost {
   background: rgba(255,214,232,0.25);
   color: #fff6fb;
 }
-
 body.theme-dawn .danger {
   background: rgba(160,20,60,0.5);
   color: #ffe5ee;
 }
-
   </style>
 </head>
 <body>
@@ -264,6 +252,24 @@ body.theme-dawn .danger {
   };
   const saveAll = (arr) => localStorage.setItem(KEY, JSON.stringify(arr));
 
+  const escapeHtml = (s) =>
+    (s ?? "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+
+  // ✅ 保存後に出す「やさしい一言」（定義は外に出す）
+  const praiseLines = [
+    "今日も、ちゃんと生きました。",
+    "小さな一歩、確かに進んでいます。",
+    "それを書けた時点で、もう十分。",
+    "自分に向き合えたのが一番えらい。",
+    "静かな努力、ちゃんと価値があります。"
+  ];
+  function showPraise() {
+    const line = praiseLines[Math.floor(Math.random() * praiseLines.length)];
+    alert("🌙 " + line);
+  }
+
   const render = () => {
     const q = $("search").value.trim().toLowerCase();
     const arr = load().sort((a,b)=> b.ts - a.ts);
@@ -325,11 +331,6 @@ body.theme-dawn .danger {
     });
   };
 
-  const escapeHtml = (s) =>
-    (s ?? "").replace(/[&<>"']/g, (c) => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
-
   const hintPool = [
     "今日、ちゃんと起きた / 出かけた",
     "小さくても家事を進めた",
@@ -385,24 +386,16 @@ body.theme-dawn .danger {
     }
 
     saveAll(arr);
+
+    // ✅ ついでに：入力欄をクリア（テーマも戻す）
     $("text").value = "";
+    $("theme").value = "";
+    $("themePreview").textContent = "—";
+
     render();
 
-const praiseLines = [
-  "今日も、ちゃんと生きました。",
-  "小さな一歩、確かに進んでいます。",
-  "それを書けた時点で、もう十分。",
-  "自分に向き合えたのが一番えらい。",
-  "静かな努力、ちゃんと価値があります。"
-];
-
-function showPraise() {
-  const line = praiseLines[Math.floor(Math.random() * praiseLines.length)];
-  alert("🌙 " + line);
-}
-
-　showPraise();
-
+    // ✅ 保存したときだけ褒めメッセージ
+    showPraise();
   });
 
   $("exportBtn").addEventListener("click", () => {
@@ -430,7 +423,6 @@ function showPraise() {
         saveAll(arr);
         render();
         alert("読み込みました。");
-
       } catch {
         alert("読み込みに失敗しました（JSON形式を確認してください）。");
       }
@@ -447,29 +439,31 @@ function showPraise() {
   $("search").addEventListener("input", render);
   $("todayBtn").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
-// ===== 時間帯でテーマを自動切替 =====
-function applyTimeTheme() {
-  const now = new Date();
-  const h = now.getHours();
+  // ===== 時間帯でテーマを自動切替 =====
+  function applyTimeTheme() {
+    const now = new Date();
+    const h = now.getHours();
 
-  // ここで時間帯を調整できます
+    // ✅ いまは「dawn強制」（確認用）
+    const isNight = false;
+    const isDawn  = true;
 
-const isNight = false;
-const isDawn  = true;
+    // ▼元に戻すときは、上2行を消してこれを使う
+    // const isNight = (h >= 19 || h < 5);   // 19:00-4:59
+    // const isDawn  = (h >= 5 && h < 8);    // 5:00-7:59
 
-  document.body.classList.remove("theme-night", "theme-dawn");
+    document.body.classList.remove("theme-night", "theme-dawn");
 
-  if (isNight) document.body.classList.add("theme-night");
-  else if (isDawn) document.body.classList.add("theme-dawn");
-  // それ以外（昼）はクラスなし＝今の配色（シャンパン/ローズ/アメジスト）
-}
+    if (isNight) document.body.classList.add("theme-night");
+    else if (isDawn) document.body.classList.add("theme-dawn");
+    // それ以外（昼）はクラスなし＝今の配色（シャンパン/ローズ/アメジスト）
+  }
 
-// 初回適用＋定期更新（5分おき）
-applyTimeTheme();
-setInterval(applyTimeTheme, 5 * 60 * 1000);
+  // 初回適用＋定期更新（5分おき）
+  applyTimeTheme();
+  setInterval(applyTimeTheme, 5 * 60 * 1000);
 
-render();
-
+  render();
 </script>
 </body>
 </html>
