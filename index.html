@@ -143,23 +143,30 @@ body.theme-night .pill{
   color: #e9e3ff;
 }
 
-/* 夜明け：夜より少し明るく、ローズの光を強める */
+/* 夜明け：ピンク＋金色（あたたかい）*/
 body.theme-dawn {
-  --bg-base: #2a2440;
-  --card-bg: #332b52;
-  --accent-main: #d6c8ff;
-  --accent-sub: #f6c0d0;
-  --text-main: #f7f5ff;
-  --text-muted: #c8c3e6;
-  --border-soft: #4a3f76;
+ --bg-base: #4a3a68;     /* 夜明け前の紫 */
+  --card-bg: #43315c;
+  --accent-main: #ffd6e8;   /* 朝焼けピンク */
+  --accent-sub: #ffb3c7;    /* ローズ光 */
+  --text-main: #fff6fb;
+  --text-muted: #e6cfe0;
+  --border-soft: #6b4b7a;
+
   background:
-    radial-gradient(1200px 700px at 50% -10%, rgba(246,192,208,0.18), transparent 62%),
-    radial-gradient(900px 500px at 85% 10%, rgba(214,200,255,0.14), transparent 60%),
+    radial-gradient(1200px 700px at 50% -10%,
+  rgba(255,179,199,0.45),
+  transparent 40%
+),
+    radial-gradient(900px 500px at 80% 10%,
+      rgba(255,214,232,0.25),
+      transparent 50%
+    ),
     var(--bg-base);
 }
 
-body.theme-dawn header{
-  background: rgba(51,43,82,0.88);
+body.theme-dawn header {
+  background: rgba(67,49,92,0.85);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border-soft);
 }
@@ -169,6 +176,22 @@ body.theme-dawn input[type="text"]{
   background: #241f39;
   color: var(--text-main);
   border: 1px solid var(--border-soft);
+}
+
+body.theme-dawn .primary {
+  background: linear-gradient(135deg, #ffb3c7, #ffd6e8);
+  color: #3a1f2b;  /* ダークローズ文字 */
+  font-weight: 700;
+}
+
+body.theme-dawn .ghost {
+  background: rgba(255,214,232,0.25);
+  color: #fff6fb;
+}
+
+body.theme-dawn .danger {
+  background: rgba(160,20,60,0.5);
+  color: #ffe5ee;
 }
 
   </style>
@@ -366,6 +389,8 @@ body.theme-dawn input[type="text"]{
     render();
   });
 
+showPraise();
+
   $("exportBtn").addEventListener("click", () => {
     const data = JSON.stringify(load(), null, 2);
     const blob = new Blob([data], {type:"application/json"});
@@ -420,16 +445,15 @@ function showPraise() {
   alert("🌙 " + line);
 }
 
-showPraise();
-
 // ===== 時間帯でテーマを自動切替 =====
 function applyTimeTheme() {
   const now = new Date();
   const h = now.getHours();
 
   // ここで時間帯を調整できます
-  const isNight = (h >= 19 || h < 5);      // 19:00-4:59
-  const isDawn  = (h >= 5 && h < 8);       // 5:00-7:59
+
+const isNight = false;
+const isDawn  = true;
 
   document.body.classList.remove("theme-night", "theme-dawn");
 
