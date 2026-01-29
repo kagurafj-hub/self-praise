@@ -388,6 +388,19 @@ body.theme-dawn .danger {
     $("text").value = "";
     render();
 
+const praiseLines = [
+  "今日も、ちゃんと生きました。",
+  "小さな一歩、確かに進んでいます。",
+  "それを書けた時点で、もう十分。",
+  "自分に向き合えたのが一番えらい。",
+  "静かな努力、ちゃんと価値があります。"
+];
+
+function showPraise() {
+  const line = praiseLines[Math.floor(Math.random() * praiseLines.length)];
+  alert("🌙 " + line);
+}
+
 　showPraise();
 
   });
@@ -417,6 +430,7 @@ body.theme-dawn .danger {
         saveAll(arr);
         render();
         alert("読み込みました。");
+
       } catch {
         alert("読み込みに失敗しました（JSON形式を確認してください）。");
       }
@@ -432,19 +446,6 @@ body.theme-dawn .danger {
 
   $("search").addEventListener("input", render);
   $("todayBtn").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
-
-const praiseLines = [
-  "今日も、ちゃんと生きました。",
-  "小さな一歩、確かに進んでいます。",
-  "それを書けた時点で、もう十分。",
-  "自分に向き合えたのが一番えらい。",
-  "静かな努力、ちゃんと価値があります。"
-];
-
-function showPraise() {
-  const line = praiseLines[Math.floor(Math.random() * praiseLines.length)];
-  alert("🌙 " + line);
-}
 
 // ===== 時間帯でテーマを自動切替 =====
 function applyTimeTheme() {
